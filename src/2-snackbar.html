@@ -11,24 +11,26 @@
     <script type="module" src="./js/2-snackbar.js" defer></script>
     <p><a href="./index.html">Go back</a></p>
     <form class="form">
-      <label>
+      <label class="label-delay">
         Delay (ms)
-        <input type="number" name="delay" required />
+        <input class="input-delay" type="number" name="delay" required />
       </label>
 
       <fieldset>
         <legend>State</legend>
-        <label>
+        <label class="field-label">
           <input type="radio" name="state" value="fulfilled" required />
           Fulfilled
         </label>
-        <label>
+        <label class="field-label">
           <input type="radio" name="state" value="rejected" required />
           Rejected
         </label>
       </fieldset>
 
-      <button type="submit">Create notification</button>
+      <button class="btn-notification" type="submit">
+        Create notification
+      </button>
     </form>
   </body>
 </html>
