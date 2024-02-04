@@ -1,31 +1,53 @@
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
-const delayForm = document.querySelector('input[type="number"]');
-console.log(delayForm);
+const form = document.querySelector('.form');
+const delayForm = document.querySelector('input[name="delay"]');
+const radioBtn = document.querySelectorAll('input[name="state"]');
+const submitBtn = document.querySelector('button[type="submit"]');
 
-const chooseBtn = document.querySelectorAll('input[type="radio"]');
-console.log(chooseBtn);
-
-const submitBtn = document.querySelectorAll('button[type="submit"]');
-console.log(submitBtn);
-
-delayForm.addEventListener('input', createPromise);
-
-
-function createPromise(delay) {
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            const isActive = Math.random() > 0.5;
-            if (isActive) {
-                resolve(`✅ Fulfilled promise in ${delay} ms`);
-                
-            } else {
-                reject(`❌ Rejected promise in ${delay} ms`);
-            }
-        }, delay)
-    });
-    return promise;
-    
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const delay = delayForm.value;
+     const choice = Array.from(radioBtn).find(btn => btn.checked).value;
+    if (delay && choice) {
+        createPromise(delay, choice)
+            .then(result => {
+                console.log(result);
+                form.reset();
+            })
+            .catch(err => console.log(err));    
 }
+});
+
+function createPromise(delay, choice) {
+    return new Promise((resolve, reject) => {
+        console.log(choice);
+        setTimeout(() => {
+            if (choice === 'fulfilled') {
+                resolve (`✅ Fulfilled promise in ${delay}ms`);
+                iziToast.success({
+                    message: `✅ Fulfilled promise in ${delay}ms`,
+                    position: "topRight",
+});
+                
+            } else if (choice === 'rejected') {
+                reject(`❌ Rejected promise in ${delay}ms`);
+                iziToast.error({
+                    message: `❌ Rejected promise in ${delay}ms`,
+                    position: "topRight",
+});
+
+            }
+        }, delay);
+ 
+    });
+      
+}
+    
+  
+
+
 
 // const p1 = createPromise(2000);
 
