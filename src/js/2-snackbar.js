@@ -8,51 +8,38 @@ const submitBtn = document.querySelector('button[type="submit"]');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const delay = delayForm.value;
+    const delay = Number(delayForm.value);
      const choice = Array.from(radioBtn).find(btn => btn.checked).value;
     if (delay && choice) {
         createPromise(delay, choice)
             .then(result => {
-                console.log(result);
                 form.reset();
+                iziToast.success({
+                    message: `✅ Fulfilled promise in ${delay}ms`,
+                    position: "topRight",
+});
+     
             })
-            .catch(err => console.log(err));    
+            .catch(err => {
+                iziToast.error(
+                {
+                    message: `❌ Rejected promise in ${delay}ms`,
+                    position: "topRight",
+            });
+            }
+)  
 }
 });
 
 function createPromise(delay, choice) {
     return new Promise((resolve, reject) => {
-        console.log(choice);
         setTimeout(() => {
             if (choice === 'fulfilled') {
-                resolve (`✅ Fulfilled promise in ${delay}ms`);
-                iziToast.success({
-                    message: `✅ Fulfilled promise in ${delay}ms`,
-                    position: "topRight",
-});
-                
+                resolve();      
             } else if (choice === 'rejected') {
-                reject(`❌ Rejected promise in ${delay}ms`);
-                iziToast.error({
-                    message: `❌ Rejected promise in ${delay}ms`,
-                    position: "topRight",
-});
-
+                reject();
             }
         }, delay);
  
-    });
-      
+    });     
 }
-    
-  
-
-
-
-// const p1 = createPromise(2000);
-
-// p1.then(smile => {
-//     console.log(smile);
-// }).catch(smile => {
-//     console.log(smile);
-// })
