@@ -34,7 +34,9 @@ const options = {
     },     
 };
 
-let userSelectedDate = new flatpickr('input', options);
+let userSelectedDate;
+
+const fp = new flatpickr('input', options);
 
 class Timer {
     constructor(updateDisplay) {

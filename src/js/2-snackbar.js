@@ -4,20 +4,19 @@ import "izitoast/dist/css/iziToast.min.css";
 const form = document.querySelector('.form');
 const delayForm = document.querySelector('input[name="delay"]');
 const radioBtn = document.querySelectorAll('input[name="state"]');
-const submitBtn = document.querySelector('button[type="submit"]');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const delay = Number(delayForm.value);
-     const choice = Array.from(radioBtn).find(btn => btn.checked).value;
-    if (delay && choice) {
-        createPromise(delay, choice)
+     const selectedState = form.elements.state.value;
+
+        createPromise(delay, selectedState)
             .then(result => {
                 form.reset();
                 iziToast.success({
                     message: `✅ Fulfilled promise in ${delay}ms`,
                     position: "topRight",
-});
+},delay);
      
             })
             .catch(err => {
@@ -25,18 +24,18 @@ form.addEventListener('submit', (e) => {
                 {
                     message: `❌ Rejected promise in ${delay}ms`,
                     position: "topRight",
-            });
+            },delay);
             }
 )  
-}
+
 });
 
-function createPromise(delay, choice) {
+function createPromise(delay, selectedState) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (choice === 'fulfilled') {
+            if (selectedState === 'fulfilled') {
                 resolve();      
-            } else if (choice === 'rejected') {
+            } else if (selectedState === 'rejected') {
                 reject();
             }
         }, delay);
