@@ -56,16 +56,18 @@ class Timer {
     const target = userSelectedDate.getTime();
     const now = Date.now();
     if (target <= now) {
-          this.onClose(); 
+      clearInterval(this.intervalId); 
+       updateStartButton(true);
     }
     const diff = target - now;
-        const timeObj = this.convertMs(diff);
+        const timeObj = convertMs(diff);
       updateStartButton(false);
       updateStateInput(false);
     this.updateDisplay(timeObj);
-  }
+  }  
+}
 
-    convertMs(ms) {
+ function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
   const minute = second * 60;
@@ -82,7 +84,6 @@ class Timer {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return { days, hours, minutes, seconds };
-}
 }
 
 const timer = new Timer(updateDisplay);
