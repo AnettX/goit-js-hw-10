@@ -54,13 +54,15 @@ class Timer {
 
     updateTime() {
     const target = userSelectedDate.getTime();
-    const now = Date.now();
-    if (target <= now) {
-      clearInterval(this.intervalId); 
-       updateStartButton(true);
-    }
-    const diff = target - now;
+      const now = Date.now();
+      const diff = target - now;
         const timeObj = convertMs(diff);
+    if (diff <= 1000) {
+      clearInterval(this.intervalId); 
+      updateStartButton(true);
+      updateStateInput(true);
+      
+    }
       updateStartButton(false);
       updateStateInput(false);
     this.updateDisplay(timeObj);
@@ -114,5 +116,5 @@ function updateStartButton(isActive) {
 }
 
 function updateStateInput(isActive) {
-  input.disabled = !isActive;
+  input.disabled = isActive;
 }
