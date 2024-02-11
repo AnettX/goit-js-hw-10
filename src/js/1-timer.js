@@ -26,9 +26,10 @@ const options = {
               message: 'Please choose a date in the future',
               position: "topRight",
 });
-           updateStartButton(false);
+        updateStartButton(false);
       } else {
         updateStartButton(true); 
+        updateStateInput(false);
           userSelectedDate = selectedDates[0];
         }
     },     
@@ -46,10 +47,17 @@ class Timer {
     start() {
         if (this.isActive) return;
         this.isActive = true;
-
+ updateStateInput(true);
         this.intervalId = setInterval(() => {
              this.updateTime();
         }, 1000);
+  }
+  
+  stop() {
+        clearInterval(this.intervalId);
+        this.isActive = false;
+        updateStartButton(true);
+        updateStateInput(false);
     }
 
     updateTime() {
@@ -58,16 +66,20 @@ class Timer {
       const diff = target - now;
         const timeObj = convertMs(diff);
     if (diff <= 1000) {
-      clearInterval(this.intervalId); 
-      updateStartButton(true);
-      updateStateInput(true);
+       this.stop();
       
     }
       updateStartButton(false);
-      updateStateInput(false);
     this.updateDisplay(timeObj);
   }  
 }
+
+const timer = new Timer(updateDisplay);
+
+button.addEventListener('click', () => {
+    timer.start();
+   
+});
 
  function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -88,13 +100,6 @@ class Timer {
   return { days, hours, minutes, seconds };
 }
 
-const timer = new Timer(updateDisplay);
-
-button.addEventListener('click', () => {
-    
-    timer.start();
-   
-});
 
 function updateDisplay({days, hours, minutes, seconds}) {
     const formattedDays = addZero(days); 
